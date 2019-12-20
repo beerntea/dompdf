@@ -136,7 +136,7 @@ class Options
      *
      * @var float
      */
-    private $fontHeightRatio = 1.1;
+    private $fontHeightRatio = 0.75;
 
     /**
      * Enable embedded PHP

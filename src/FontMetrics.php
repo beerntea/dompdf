@@ -437,19 +437,16 @@ class FontMetrics
      */
     public function getType($type)
     {
-        if (preg_match("/bold/i", $type)) {
-            if (preg_match("/italic|oblique/i", $type)) {
-                $type = "bold_italic";
-            } else {
-                $type = "bold";
-            }
-        } elseif (preg_match("/italic|oblique/i", $type)) {
-            $type = "italic";
-        } else {
-            $type = "normal";
+        $ret = 'normal';
+        if (preg_match("/bold/i", $type)) $ret = 'bold';
+        elseif (preg_match('/\\b[1-9][0-9]{0,2}\\b/', $type, $matches)) {
+          $ret = $matches[0];
+          if ($ret === '400') $ret = 'normal';
+          elseif ($ret === '700') $ret = 'bold';
         }
 
-        return $type;
+        if (preg_match("/italic|oblique/i", $type)) $ret = ($ret === 'normal') ? 'italic' : $ret.'_italic';
+        return $ret;
     }
 
     /**

@@ -715,7 +715,7 @@ class Style
                     if (array_key_exists($shorthand, $this->_props) && $this->_props[$shorthand] === "inherit") {
                         unset($this->_props[$shorthand]);
                     }
-                } 
+                }
             }
         }
 
@@ -931,11 +931,9 @@ class Style
         $weight = $this->__get("font_weight");
 
         if (is_numeric($weight)) {
-            if ($weight < 600) {
-                $weight = "normal";
-            } else {
-                $weight = "bold";
-            }
+          $weight = (string)$weight;
+          if ($weight === '400') $weight = 'normal';
+          elseif ($weight === '700') $weight = 'bold';
         } else if ($weight === "bold" || $weight === "bolder") {
             $weight = "bold";
         } else {
@@ -945,15 +943,8 @@ class Style
         // Resolve font-style
         $font_style = $this->__get("font_style");
 
-        if ($weight === "bold" && ($font_style === "italic" || $font_style === "oblique")) {
-            $subtype = "bold_italic";
-        } else if ($weight === "bold" && $font_style !== "italic" && $font_style !== "oblique") {
-            $subtype = "bold";
-        } else if ($weight !== "bold" && ($font_style === "italic" || $font_style === "oblique")) {
-            $subtype = "italic";
-        } else {
-            $subtype = "normal";
-        }
+        $subtype = $weight;
+        if ($font_style === "italic" || $font_style === "oblique") $subtype = ($subtype === 'normal') ? 'italic' : $subtype.'_italic';
 
         // Resolve the font family
         if ($DEBUGCSS) {
@@ -2007,7 +1998,7 @@ class Style
         }
 
         //matching numeric value followed by unit -> this is indeed a subsequent font size. Skip!
-        if (preg_match("/^(bold|bolder|lighter|100|200|300|400|500|600|700|800|900|normal)\s*(.*)$/i", $val, $match) &&
+        if (preg_match("/^(bold|bolder|lighter|[1-9][0-9]{0,2}|normal)\s*(.*)$/i", $val, $match) &&
             !preg_match("/^(?:pt|px|pc|em|ex|in|cm|mm|%)/", $match[2])
         ) {
             $this->_set_style("font_weight", $match[1], $important);
