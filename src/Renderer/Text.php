@@ -20,7 +20,7 @@ use Dompdf\Frame;
 class Text extends AbstractRenderer
 {
     /** Thickness of underline. Screen: 0.08, print: better less, e.g. 0.04 */
-    const DECO_THICKNESS = 0.02;
+    const DECO_THICKNESS = 0.04;
 
     //Tweaking if $base and $descent are not accurate.
     //Check method_exists( $this->_canvas, "get_cpdf" )
@@ -29,13 +29,13 @@ class Text extends AbstractRenderer
     //  But $size and $size-$height seem to be accurate enough
 
     /** Relative to bottom of text, as fraction of height */
-    const UNDERLINE_OFFSET = 0.0;
+    const UNDERLINE_OFFSET = 0.4;
 
     /** Relative to top of text */
     const OVERLINE_OFFSET = 0.0;
 
     /** Relative to centre of text. */
-    const LINETHROUGH_OFFSET = 0.0;
+    const LINETHROUGH_OFFSET = 0.4;
 
     /** How far to extend lines past either end, in pt */
     const DECO_EXTENSION = 0.0;
@@ -105,7 +105,7 @@ class Text extends AbstractRenderer
             $cpdf_font = $this->_canvas->get_cpdf()->fonts[$style->font_family];
 
             if (isset($cpdf_font["UnderlinePosition"])) {
-                $underline_position = $cpdf_font["UnderlinePosition"] / 1000;
+                $underline_position = $cpdf_font["UnderlinePosition"] / 1500;
             }
 
             if (isset($cpdf_font["UnderlineThickness"])) {
